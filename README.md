@@ -167,3 +167,140 @@ function fooBarFunction(obj: Foo | Bar) {
   }
 }
 ```
+
+### intersection Type
+
+``` typescript
+interface IA {
+  a: number;
+}
+
+interface IB {
+  b: number;
+}
+
+interface IC {
+  c: number;
+}
+
+function X(obj: IA & IB & IC) {
+  return obj.a + obj.b + obj.c;
+}
+```
+
+
+### Type Alias
+
+```typescript
+type Alias1 = string | string[] | null;
+type Alias2 = { a: number } & { b: number };
+type Alias3<T> = T[];
+
+type Alias4 = {
+  a: number;
+  b: number;
+}
+```
+
+## Typescript with React
+
+### Function Components
+
+```typescript
+import React from 'react';
+
+interface Task {
+  title: string;
+}
+
+interface TaskListProps {
+  tasks: Task[];
+}
+
+const TaskList: React.FunctionComponent<
+  TaskListProps
+>= ({ tasks }) => (
+  <ul>
+    {tasks.map((task, index) => (
+      <li key={index}>{task.title}</li>
+    ))}
+  </ul>
+);
+
+const tasks = [
+  { title: 'tittle1' },
+  { title: 'tittle2' },
+  { title: 'tittle3' }
+];
+
+export default () => (
+  <div>
+    <TaskList tasks={tasks} />
+  </div>
+);
+```
+
+### Class Components
+
+```typescript
+import React from 'react';
+
+interface Task {
+  title: string;
+}
+
+interface TaskListProps {
+  initialTasks: Task[];
+}
+
+interface TaskListState {
+  tasks: Task[];
+}
+
+class TaskList extends React.Component<
+  TaskListProps,
+  TaskListState
+> {
+  constructor(props: TaskListProps) {
+    super(props);
+    this.state = {
+      tasks: props.initialTasks
+    };
+    this.onAddNewTaskClick = this.onAddNewTaskClick.bind(this);
+  }
+
+  onAddNewTaskClick() {
+    this.setState({
+      tasks: [
+        ...this.state.tasks,
+        { title: 'New Task' }
+      ]
+    });
+  }
+  render() {
+    const { tasks } = this.state;
+    return (
+      <ul>
+        {tasks.map((task, index) => (
+          <li key={index}>{task.title}</li>
+        ))}
+        <button onClick={this.onAddNewTaskClick}>Add new Task</button>
+      </ul>
+    )
+  }
+}
+
+const tasks = [
+  { title: 'tittle1' },
+  { title: 'tittle2' },
+  { title: 'tittle3' },
+]
+
+export default () => (
+  <div>
+    <TaskList initialTasks={tasks} />
+  </div>
+);
+
+```
+
