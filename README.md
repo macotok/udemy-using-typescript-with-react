@@ -30,7 +30,7 @@ npx concurrently -k -n COMPILER,NODEMON -c yellow,blue "tsc -w" "nodemon -w dist
 
 ### Interfaces
 
-``` typescript
+```typescript
 interface Profile {
   readOnly name: string,
   age?: number;
@@ -170,7 +170,7 @@ function fooBarFunction(obj: Foo | Bar) {
 
 ### intersection Type
 
-``` typescript
+```typescript
 interface IA {
   a: number;
 }
@@ -301,6 +301,98 @@ export default () => (
     <TaskList initialTasks={tasks} />
   </div>
 );
-
 ```
 
+### connect関数
+
+```typescript
+interface Task {
+  title: string;
+}
+
+interface OwnProps {}
+
+interface StateProps {
+  tasks: Task[];
+}
+
+interface DispatchProps {
+  fetchTasks: () => void;
+}
+
+interface AppState {
+  tasks: Task[];
+}
+
+export const ConnectedTaskList = connect<
+  StateProps,
+  DispatchProps,
+  OwnProps,
+  AppState
+>(
+  state => ({
+    tasks: state.tasks
+  }),
+  dispatch => ({
+    fetchTasks: () => dispatch(fetchTasks())
+  })
+)(TasksList);
+```
+
+### reducer
+
+```typescript
+import { Action } from 'redux';
+
+interface Task {
+  title: string;
+}
+
+interface AppState {
+  tasks: Task[];
+}
+
+interface FetchTasksAction extends Action<'FETCH_TASKS'> {
+  tasks: Task[];
+}
+
+const defaultState = {
+  tasks: []
+};
+
+export const reducer = (
+  state: AppState = defaultState,
+  action: FetchTasksAction
+) => {
+  switch (action.type) {
+    case 'FETCH_TASKS':
+      return {
+        ...state,
+        tasks: action.tasks
+      };
+  }
+  return state;
+};
+```
+
+### action
+
+```typescript
+import { Action } from 'redux';
+
+interface Task {
+  title: string;
+}
+
+interface FetchTasksAction extends Action<'FETCH_TASKS'> {
+  tasks: Task[];
+}
+
+export const fetchTasks = (): FetchTasksAction => ({
+  type: 'FETCH_TASKS',
+  tasks: [
+    { title: 'First Task'},
+    { title: 'Second Task'},
+  ]
+});
+```
