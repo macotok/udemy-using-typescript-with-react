@@ -420,3 +420,29 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 
 <form onSubmit={handleSubmit}>
 ```
+
+### useState
+
+- pattern1
+
+```typescript
+const [notificationVisible, toggleNotification] = useState<boolean>(true);
+```
+
+- pattern2
+
+```typescript
+interface State {
+  notificationVisible: boolean;
+}
+
+const [state, setState] = useState<State>({
+  notificationVisible: true
+});
+
+const handleClick = () => {
+  setState({
+    notificationVisible: false
+  });
+};
+```
