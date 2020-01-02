@@ -303,7 +303,7 @@ export default () => (
 );
 ```
 
-### connect関数
+### connect
 
 ```typescript
 interface Task {
@@ -395,4 +395,28 @@ export const fetchTasks = (): FetchTasksAction => ({
     { title: 'Second Task'},
   ]
 });
+```
+
+### onChange Event
+
+```typescript
+const [hoge, setHoge] = useState('');
+
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { value } = e.target;
+  setHoge(value);
+};
+
+<input type="text" value={hoge} onChange={handleChange} />
+```
+
+### onSubmit Event
+
+```typescript
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  ...
+};
+
+<form onSubmit={handleSubmit}>
 ```
